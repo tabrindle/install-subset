@@ -15,21 +15,21 @@ Worse, sometimes you have to build a native binding like node-sass or couchbase,
 - battery
 - patience
 
-With install subsets, you can cleverly avoid some devDependencies in certain contexts. For example, on a CI server where you are simply building an artifact, you do not need to install dependencies like eslint, karma, or other testing frameworks. With a busy or sharedserver, you can shave precious time off of each build this way. 
+You can cleverly avoid some devDependencies in certain contexts. For example, on a CI server where you are simply building an artifact, you do not need to install dependencies like eslint, karma, or other testing frameworks. With a busy or shared server, you can shave precious time off of each build this way. 
 
 ## Installation
 
-    `npm install -g install-subset`
+`npm install -g install-subset`
 
 ## Usage
 
 Add something like to your package.json:
 ```
-"installSubsets": {
+"subsets": {
 	"build": {
 		"whitelist": [
-			"dotenv",
-			"prettier"
+			"babel-cli",
+            "dotenv"
 		]
 	},
 	"test": {
@@ -42,15 +42,14 @@ Add something like to your package.json:
 }
 ```
 
-then call:
-`install-subset install build`
+Then call `subset install test`
 
 ## Info
 
 - 'build' and 'test' are subset names
 - 'whitelist' and 'blacklist' are methods of install
-- 'whitelist' allows that subset of your devDependencies to install
-- 'blacklist' disallows that subset of your devDependencies to install
+    - 'whitelist' allows that subset of your devDependencies to install
+    - 'blacklist' disallows that subset of your devDependencies to install
 - package.json will be temporarily changed, and restored after install
 
 
