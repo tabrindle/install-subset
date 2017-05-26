@@ -26,19 +26,19 @@ You can cleverly avoid some devDependencies in certain contexts. For example, on
 Add something like to your package.json:
 ```
 "subsets": {
-	"build": {
-		"whitelist": [
-			"babel-cli",
-            "dotenv"
-		]
-	},
-	"test": {
-		"blacklist": [
-			"eslint",
-			"lint-rules",
-			"prettier"
-		]
-	}
+  "build": {
+    "whitelist": [
+      "babel-cli",
+      "dotenv"
+    ]
+  },
+  "test": {
+    "blacklist": [
+      "eslint",
+      "lint-rules",
+      "prettier"
+    ]
+  }
 }
 ```
 
