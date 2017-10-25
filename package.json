@@ -1,28 +1,24 @@
 {
   "name": "install-subset",
-  "version": "2.0.0",
+  "version": "3.0.0",
   "description": "Install a subset of npm dependencies based on given contexts",
   "main": "index.js",
-  "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
-  },
   "bin": {
     "subset": "index.js"
   },
-  "keywords": [
-    "npm",
-    "install",
-    "subset",
-    "dependency"
-  ],
+  "keywords": ["npm", "install", "subset", "dependency"],
   "author": "tabrindle@gmail.com",
   "license": "MIT",
+  "prettier": {
+    "printWidth": 120,
+    "trailingCommas": "es5"
+  },
   "devDependencies": {
-    "prettier": "^1.3.1"
+    "prettier": "^1.7.4"
   },
   "dependencies": {
-    "commander": "^2.9.0",
+    "commander": "^2.11.0",
     "lodash": "^4.17.4",
-    "shelljs": "^0.7.7"
+    "shelljs": "^0.7.8"
   }
 }
