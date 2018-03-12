@@ -46,10 +46,10 @@ cli
     const subset = packageJson.subsets[input_string];
 
     // prune devDependencies according to subset declarations and options
-    if (subset.whitelist) {
-      packageJson.devDependencies = _.pick(packageJson.devDependencies, subset.whitelist);
-    } else if (subset.blacklist) {
-      packageJson.devDependencies = _.omit(packageJson.devDependencies, subset.blacklist);
+    if (subset.include) {
+      packageJson.devDependencies = _.pick(packageJson.devDependencies, subset.include);
+    } else if (subset.exclude) {
+      packageJson.devDependencies = _.omit(packageJson.devDependencies, subset.exclude);
     } else {
       throw 'No valid subset actions found';
     }

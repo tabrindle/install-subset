@@ -11,7 +11,8 @@
   "license": "MIT",
   "prettier": {
     "printWidth": 120,
-    "trailingCommas": "es5"
+    "trailingCommas": "es5",
+    "singleQuote": true
   },
   "devDependencies": {
     "prettier": "^1.7.4"
