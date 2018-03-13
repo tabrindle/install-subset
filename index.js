@@ -1,8 +1,8 @@
 #!/usr/bin/env node
 'use strict';
 
+var path = require('path');
 var fs = require('fs');
-var _ = require('lodash');
 var shelljs = require('shelljs');
 var cli = require('commander');
 var cwd = process.cwd();
@@ -12,16 +12,28 @@ var spawnSync = require('child_process').spawnSync;
 
 var backup = function(filename) {
   try {
-    fs.writeFileSync(cwd + '/' + filename + '.backup', fs.readFileSync(cwd + '/' + filename));
-    fs.unlinkSync(cwd + '/' + filename);
+    fs.writeFileSync(path.join(cwd, filename, '.backup'), fs.readFileSync(path.join(cwd, filename)));
+    fs.unlinkSync(path.join(cwd, filename));
   } catch (err) {}
 };
 
 var restore = function(filename) {
   try {
-    fs.writeFileSync(cwd + '/' + filename, fs.readFileSync(cwd + '/' + filename + '.backup'));
-    fs.unlinkSync(cwd + '/' + filename + '.backup');
+    fs.writeFileSync(path.join(cwd, filename), fs.readFileSync(path.join(cwd, filename, '.backup')));
+    fs.unlinkSync(path.join(cwd, filename, '.backup'));
   } catch (err) {}
+};
+
+var omit = function(obj, props) {
+  return Object.keys(obj)
+    .filter(key => props.indexOf(key) < 0)
+    .reduce((acc, key) => Object.assign(acc, { [key]: obj[key] }), {});
+};
+
+var pick = function(obj, props) {
+  return Object.keys(obj)
+    .filter(key => props.indexOf(key) >= 0)
+    .reduce((acc, key) => Object.assign(acc, { [key]: obj[key] }), {});
 };
 
 cli
@@ -47,9 +59,9 @@ cli
 
     // prune devDependencies according to subset declarations and options
     if (subset.include) {
-      packageJson.devDependencies = _.pick(packageJson.devDependencies, subset.include);
+      packageJson.devDependencies = pick(packageJson.devDependencies, subset.include);
     } else if (subset.exclude) {
-      packageJson.devDependencies = _.omit(packageJson.devDependencies, subset.exclude);
+      packageJson.devDependencies = omit(packageJson.devDependencies, subset.exclude);
     } else {
       throw 'No valid subset actions found';
     }
@@ -60,12 +72,12 @@ cli
     backup('yarn.lock');
 
     if (options.clean) {
-      shelljs.rm('-rf', cwd + '/node_modules');
+      shelljs.rm('-rf', path.join(cwd, 'node_modules'));
     }
 
     try {
       // write the new temp package.json
-      fs.writeFileSync(cwd + '/package.json', JSON.stringify(packageJson, null, '  '));
+      fs.writeFileSync(path.join(cwd, 'package.json'), JSON.stringify(packageJson, null, '  '));
 
       // choose which installer to use, then spawn
       if (!options.npm && shelljs.which('yarn')) {

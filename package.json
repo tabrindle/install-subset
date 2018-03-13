@@ -6,12 +6,7 @@
   "bin": {
     "subset": "index.js"
   },
-  "keywords": [
-    "npm",
-    "install",
-    "subset",
-    "dependency"
-  ],
+  "keywords": ["npm", "install", "subset", "dependency"],
   "author": "tabrindle@gmail.com",
   "license": "MIT",
   "prettier": {
@@ -24,7 +19,6 @@
   },
   "dependencies": {
     "commander": "^2.11.0",
-    "lodash": "^4.17.4",
     "shelljs": "^0.7.8"
   }
 }
