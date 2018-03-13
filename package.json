@@ -1,12 +1,17 @@
 {
   "name": "install-subset",
-  "version": "4.0.0",
+  "version": "4.1.0",
   "description": "Install a subset of npm dependencies based on given contexts",
   "main": "index.js",
   "bin": {
     "subset": "index.js"
   },
-  "keywords": ["npm", "install", "subset", "dependency"],
+  "keywords": [
+    "npm",
+    "install",
+    "subset",
+    "dependency"
+  ],
   "author": "tabrindle@gmail.com",
   "license": "MIT",
   "prettier": {
