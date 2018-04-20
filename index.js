@@ -8,7 +8,7 @@ var cli = require('commander');
 var cwd = process.cwd();
 var installSubsetPackageJson = require('./package.json');
 var packageJson = require(cwd + '/package.json');
-var spawnSync = require('child_process').spawnSync;
+var spawnSync = require('cross-spawn').sync;
 
 var backup = function(filename) {
   try {
