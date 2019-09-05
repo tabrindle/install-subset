@@ -15,7 +15,6 @@ var backup = function(filename) {
     const originalPath = path.join(cwd, filename)
     const backupPath = originalPath + '.backup'
     fs.writeFileSync(backupPath, fs.readFileSync(originalPath));
-    fs.unlinkSync(originalPath);
   } catch (err) {}
 };
 
