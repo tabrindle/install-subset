@@ -41,6 +41,7 @@ cli
   .alias('i')
   .option('-d, --clean', 'remove node_modules first')
   .option('--npm', 'use npm to install')
+  .option('-a, --all', 'prune dependencies as well as dev dependencies')
   .description('install a given subset defined in package.json')
   .action(function(input_string, options) {
     if (!input_string) {
@@ -64,6 +65,17 @@ cli
       packageJson.devDependencies = omit(packageJson.devDependencies, subset.exclude);
     } else {
       throw 'No valid subset actions found';
+    }
+
+    if (options.all) {
+      // prune dependencies according to subset declarations and options
+      if (subset.include) {
+        packageJson.dependencies = pick(packageJson.dependencies, subset.include);
+      } else if (subset.exclude) {
+        packageJson.dependencies = omit(packageJson.dependencies, subset.exclude);
+      } else {
+        throw 'No valid subset actions found';
+      }
     }
 
     // backup package.json and lockfiles to restore later
