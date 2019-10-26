@@ -12,15 +12,18 @@ var spawnSync = require('cross-spawn').sync;
 
 var backup = function(filename) {
   try {
-    fs.writeFileSync(path.join(cwd, filename, '.backup'), fs.readFileSync(path.join(cwd, filename)));
-    fs.unlinkSync(path.join(cwd, filename));
+    const originalPath = path.join(cwd, filename)
+    const backupPath = originalPath + '.backup'
+    fs.writeFileSync(backupPath, fs.readFileSync(originalPath));
   } catch (err) {}
 };
 
 var restore = function(filename) {
   try {
-    fs.writeFileSync(path.join(cwd, filename), fs.readFileSync(path.join(cwd, filename, '.backup')));
-    fs.unlinkSync(path.join(cwd, filename, '.backup'));
+    const originalPath = path.join(cwd, filename)
+    const backupPath = originalPath + '.backup'
+    fs.writeFileSync(originalPath, fs.readFileSync(backupPath));
+    fs.unlinkSync(backupPath);
   } catch (err) {}
 };
 
