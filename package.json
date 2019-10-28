@@ -1,6 +1,6 @@
 {
   "name": "install-subset",
-  "version": "4.1.0",
+  "version": "4.2.0",
   "description": "Install a subset of npm dependencies based on given contexts",
   "main": "index.js",
   "bin": {
