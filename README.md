@@ -1,6 +1,6 @@
 <p align="center">
   <img src="https://raw.githubusercontent.com/tabrindle/install-subset/master/logo.png" align="center"  width="700px"/>
-  <h3 align="center">Stop installing npm devDependencies that you don't need.</h3>
+  <h3 align="center">Stop installing npm dependencies that you don't need.</h3>
   <hr/>
 </p>
 
@@ -8,7 +8,7 @@
 [![npm downloads per month](https://img.shields.io/npm/dm/install-subset.svg?maxAge=86400)](https://www.npmjs.com/package/install-subset)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 
-**You can exclude some npm devDependencies with install-subset when you don't need them**.
+**You can exclude some npm dependencies with install-subset when you don't need them**.
 
 Consider:
 - A CI server for your builds: you may not need your linting or testing tools. With a busy or shared server, you can save precious time.
