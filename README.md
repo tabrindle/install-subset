@@ -27,8 +27,7 @@ Even with npm 5 and yarn, **installing node modules can be a long and painful ta
 `npm install -g install-subset`
 
 ## Usage
-
-Add something like to your package.json:
+Add something like this to your package.json:
 ```
 "subsets": {
   "build": {
@@ -43,13 +42,24 @@ Add something like to your package.json:
       "eslint",
       "prettier"
     ]
+  },
+  "container": {
+    "exclude": [
+      "nativescript",
+      "serverless",
+      "ngrok"
+    ]
   }
 }
 ```
 
 In your terminal: `$ subset install test`
 
-This installs your normal dependencies, minus eslint and prettier.
+This installs all of your application `dependencies`, excluding eslint and prettier, which are listed under your `devDependencies`. 
+
+If you would like install-subset to consider all of the dependencies of your application when evaluating subsets...
+
+In your terminal: `$ subset install container --all`
 
 ## Case Study
 
