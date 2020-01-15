@@ -55,11 +55,26 @@ cli
       throw 'No install subsets in package.json';
     }
 
-    if (!packageJson.subsets[input_string]) {
-      throw 'No install subset with that name';
+    const subsetStrings = input_string.split(" ")
+    let subset = {}
+    for(var i=0; i < subsetStrings.length; i++) {
+      const packageSubset = packageJson.subsets[subsetStrings[i]]
+      if (!packageSubset) {
+        throw 'No install subset with name ' + subsetStrings[i];
+      }
+      if (packageSubset.exclude) {
+        if (!subset.exclude) {
+          subset.exclude = []
+        }
+        subset.exclude = [...subset.exclude, ...packageSubset.exclude]
+      }
+      if (packageSubset.include) {
+        if (!subset.include) {
+          subset.include = []
+        }
+        subset.include = [...subset.include, ...packageSubset.include]
+      }
     }
-
-    const subset = packageJson.subsets[input_string];
 
     // prune devDependencies according to subset declarations and options
     if (subset.include) {
