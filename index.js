@@ -40,22 +40,26 @@ var pick = function(obj, props) {
 };
 
 cli
-  .command('install [input_string]')
+  .command('install <input_strings...>')
   .alias('i')
   .option('-d, --clean', 'remove node_modules first')
   .option('--npm', 'use npm to install')
-  .option('-a, --all', 'prune dependencies as well as dev dependencies')
+  .option('-a, --all', 'prune dependencies as well as devDependencies')
   .description('install a given subset defined in package.json')
-  .action(function(input_string, options) {
-    if (!input_string) {
-      throw 'Please provide an install subset name';
-    }
+  .action(function(input_strings, options) {
 
     if (!packageJson.subsets) {
       throw 'No install subsets in package.json';
     }
 
-    const subsetStrings = input_string.split(" ")
+    const subsetStrings = new Array()
+
+    if (input_strings.length >= 1) {
+        for (let string of input_strings) {
+          subsetStrings.push(string)
+        }
+    }
+
     let subset = {}
     for(var i=0; i < subsetStrings.length; i++) {
       const packageSubset = packageJson.subsets[subsetStrings[i]]
@@ -126,7 +130,9 @@ cli
       throw 'Error code ' + installer.status;
     }
 
-    console.log('Installation of subset "' + input_string + '" successful');
+    for (let input_string of subsetStrings) {
+      console.log('Installation of subset "' + input_string + '" successful');
+    }
   });
 
 cli.command('*').action(() => cli.help());
