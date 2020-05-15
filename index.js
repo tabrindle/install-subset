@@ -9,6 +9,7 @@ var cwd = process.cwd();
 var installSubsetPackageJson = require('./package.json');
 var packageJson = require(cwd + '/package.json');
 var spawnSync = require('cross-spawn').sync;
+var importFresh = require('import-fresh');
 
 var backup = function(filename) {
   try {
@@ -39,6 +40,18 @@ var pick = function(obj, props) {
     .reduce((acc, key) => Object.assign(acc, { [key]: obj[key] }), {});
 };
 
+var getConfigFile = function() {
+  let content;
+  const filepath = path.resolve(process.cwd(), 'subset.config.js')
+  try {
+    content = fs.readFileSync(filepath, 'utf8');
+  } catch (e) {
+    content = null;
+  }
+  if (content === null || (content && content.trim() === '')) return null
+  return importFresh(filepath);
+}
+
 cli
   .command('install [input_string]')
   .alias('i')
@@ -51,15 +64,17 @@ cli
       throw 'Please provide an install subset name';
     }
 
-    if (!packageJson.subsets) {
-      throw 'No install subsets in package.json';
+    const subsets = packageJson.subsets || getConfigFile() || {};
+
+    if (!Object.keys(subsets).length) {
+      throw 'No install subsets in package.json/subset.config.js';
     }
 
-    if (!packageJson.subsets[input_string]) {
+    if (!subsets[input_string]) {
       throw 'No install subset with that name';
     }
 
-    const subset = packageJson.subsets[input_string];
+    const subset = subsets[input_string];
 
     // prune devDependencies according to subset declarations and options
     if (subset.include) {
@@ -113,6 +128,11 @@ cli
 
     console.log('Installation of subset "' + input_string + '" successful');
   });
+
+cli.command('config').action(() => {
+  const subsets = packageJson.subsets || getConfigFile() || {};
+  console.log(subsets);
+})
 
 cli.command('*').action(() => cli.help());
 

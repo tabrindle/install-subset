@@ -53,6 +53,30 @@ Add something like this to your package.json:
 }
 ```
 
+Or, you can use a subset.config.js file for more flexibility:
+```
+const both = [
+  'dotenv'
+]
+
+module.exports = {
+  build: {
+    include: [
+      'babel-cli',
+      'webpack',
+      ...both
+    ]
+  },
+  test: {
+    exclude: [
+      'eslint',
+      'prettier',
+      ...both
+    ]
+  }
+}
+```
+
 In your terminal: `$ subset install test`
 
 This installs all of your application `dependencies`, excluding eslint and prettier, which are listed under your `devDependencies`. 
