@@ -83,7 +83,7 @@ cli
     }
 
     if (subset.include && subset.exclude) {
-        console.erro(`Failed to install subset ${input_string}.`);
+        console.error(`Failed to install subset ${input_string}.`);
         console.error("Subsets can only include OR exclude packages. Please correct your subset or combination of subsets and try again.")
         process.exit(1)
     }
