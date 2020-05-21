@@ -53,7 +53,7 @@ cli
       process.exit(1)
     }
 
-    const subsetStrings = new Array()
+    const subsetStrings = []
 
     if (input_strings.length >= 1) {
         for (let string of input_strings) {
@@ -65,7 +65,7 @@ cli
     for(var i=0; i < subsetStrings.length; i++) {
       const packageSubset = packageJson.subsets[subsetStrings[i]]
       if (!packageSubset) {
-        console.error('No install subset with name ' + subsetStrings[i] + ' was found.')
+        console.error(`No install subset with name ${subsetStrings[i]} was found.`)
         process.exit(1)
       }
       if (packageSubset.exclude) {
@@ -80,6 +80,12 @@ cli
         }
         subset.include = [...subset.include, ...packageSubset.include]
       }
+    }
+
+    if (subset.include && subset.exclude) {
+        console.erro(`Failed to install subset ${input_string}.`);
+        console.error("Subsets can only include OR exclude packages. Please correct your subset or combination of subsets and try again.")
+        process.exit(1)
     }
 
     // prune devDependencies according to subset declarations and options
@@ -132,12 +138,12 @@ cli
 
     if (installer.status !== 0) {
 
-      console.error('Error code ' + installer.status + '.')
+      console.error(`Error code ${installer.status}.`)
       process.exit(1)
     }
 
     for (let input_string of subsetStrings) {
-      console.log('Installation of subset "' + input_string + '" successful.');
+      console.log(`Installation of subset ${input_string} successful.`);
     }
   });
 
