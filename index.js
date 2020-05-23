@@ -40,26 +40,53 @@ var pick = function(obj, props) {
 };
 
 cli
-  .command('install [input_string]')
+  .command('install <input_strings...>')
   .alias('i')
-  .option('-d, --clean', 'remove node_modules first')
-  .option('--npm', 'use npm to install')
-  .option('-a, --all', 'prune dependencies as well as dev dependencies')
-  .description('install a given subset defined in package.json')
-  .action(function(input_string, options) {
-    if (!input_string) {
-      throw 'Please provide an install subset name';
-    }
+  .option('-d, --clean', 'Remove node_modules first.')
+  .option('--npm', 'Use npm to install.')
+  .option('-a, --all', 'Prune dependencies as well as devDependencies.')
+  .description('Install a given subset or multiple subsets defined in package.json.')
+  .action(function(input_strings, options) {
 
     if (!packageJson.subsets) {
-      throw 'No install subsets in package.json';
+      console.error('No install subsets in package.json.')
+      process.exit(1)
     }
 
-    if (!packageJson.subsets[input_string]) {
-      throw 'No install subset with that name';
+    const subsetStrings = []
+
+    if (input_strings.length >= 1) {
+        for (let string of input_strings) {
+          subsetStrings.push(string)
+        }
     }
 
-    const subset = packageJson.subsets[input_string];
+    let subset = {}
+    for(var i=0; i < subsetStrings.length; i++) {
+      const packageSubset = packageJson.subsets[subsetStrings[i]]
+      if (!packageSubset) {
+        console.error(`No install subset with name ${subsetStrings[i]} was found.`)
+        process.exit(1)
+      }
+      if (packageSubset.exclude) {
+        if (!subset.exclude) {
+          subset.exclude = []
+        }
+        subset.exclude = [...subset.exclude, ...packageSubset.exclude]
+      }
+      if (packageSubset.include) {
+        if (!subset.include) {
+          subset.include = []
+        }
+        subset.include = [...subset.include, ...packageSubset.include]
+      }
+    }
+
+    if (subset.include && subset.exclude) {
+        console.error(`Failed to install subset ${input_string}.`);
+        console.error("Subsets can only include OR exclude packages. Please correct your subset or combination of subsets and try again.")
+        process.exit(1)
+    }
 
     // prune devDependencies according to subset declarations and options
     if (subset.include) {
@@ -67,7 +94,8 @@ cli
     } else if (subset.exclude) {
       packageJson.devDependencies = omit(packageJson.devDependencies, subset.exclude);
     } else {
-      throw 'No valid subset actions found';
+      console.error('No valid subset actions found.')
+      process.exit(1)
     }
 
     if (options.all) {
@@ -77,7 +105,8 @@ cli
       } else if (subset.exclude) {
         packageJson.dependencies = omit(packageJson.dependencies, subset.exclude);
       } else {
-        throw 'No valid subset actions found';
+        console.error('No valid subset actions found.')
+        process.exit(1)
       }
     }
 
@@ -108,10 +137,14 @@ cli
     restore('yarn.lock');
 
     if (installer.status !== 0) {
-      throw 'Error code ' + installer.status;
+
+      console.error(`Error code ${installer.status}.`)
+      process.exit(1)
     }
 
-    console.log('Installation of subset "' + input_string + '" successful');
+    for (let input_string of subsetStrings) {
+      console.log(`Installation of subset ${input_string} successful.`);
+    }
   });
 
 cli.command('*').action(() => cli.help());
@@ -121,5 +154,6 @@ cli.version(installSubsetPackageJson.version).parse(process.argv);
 if (cli.args.length === 0) cli.help();
 
 process.on('uncaughtException', err => {
-  console.log('ERROR: ' + err);
+  console.error('ERROR: ' + err);
+  process.exit(1)
 });
