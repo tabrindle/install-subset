@@ -75,19 +75,19 @@ In your terminal: `$subset install test container`
 [fakeit](https://github.com/bentonam/fakeit) is an amazing fake data generation library with support for couchbase, complicated related data models, multiple export options and more. However, its dependency tree is large, and has a dependency on a native Couchbase binary. In an example React Native project, just excluding this one rarely used devDependency cuts install time by around 29 seconds. 
 
 Warm cache, yarn v1.5.1, fresh install, without `install-subset`
-
+```
   rm -rf node_modules && yarn
   ...
   real    0m40.496s
   user    0m32.451s
   sys     0m11.309s
-
+```
 
 Warm cache, yarn v1.5.1, fresh install  With `install-subset` excluding [fakeit](https://github.com/bentonam/fakeit)
-
+```
   rm -rf node_modules && subset install "development"
   ...
   real    0m11.157s
   user    0m9.261s
   sys     0m6.134s
-
+```
