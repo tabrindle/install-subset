@@ -12,6 +12,13 @@
     "subset",
     "dependency"
   ],
+  "bugs": {
+    "url": "https://github.com/tabrindle/install-subset/issues"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/tabrindle/install-subset.git"
+  },
   "author": "tabrindle@gmail.com",
   "license": "MIT",
   "prettier": {
