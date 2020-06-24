@@ -15,6 +15,9 @@
   "bugs": {
     "url": "https://github.com/tabrindle/install-subset/issues"
   },
+  "files": [
+    "index.js"
+  ],
   "repository": {
     "type": "git",
     "url": "https://github.com/tabrindle/install-subset.git"
