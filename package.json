@@ -16,26 +16,38 @@
     "url": "https://github.com/tabrindle/install-subset/issues"
   },
   "files": [
-    "index.js"
+    "index.js",
+    "src/"
   ],
   "repository": {
     "type": "git",
     "url": "https://github.com/tabrindle/install-subset.git"
   },
+  "scripts": {
+    "test": "jest",
+    "format": "prettier index.js src/*.js --write"
+  },
   "author": "tabrindle@gmail.com",
   "license": "MIT",
   "prettier": {
-    "printWidth": 120,
-    "trailingCommas": "es5",
-    "singleQuote": true
+    "arrowParens": "always",
+    "printWidth": 100,
+    "semi": false,
+    "singleQuote": true,
+    "trailingComma": "es5"
+  },
+  "jest": {
+    "testEnvironment": "node",
+    "verbose": true
   },
   "devDependencies": {
-    "prettier": "^1.7.4"
+    "jest": "^26.1.0",
+    "prettier": "^2.0.5"
   },
   "dependencies": {
-    "commander": "^2.11.0",
-    "cross-spawn": "^6.0.5",
+    "commander": "^5.1.0",
+    "cross-spawn": "^7.0.3",
     "import-fresh": "^3.2.1",
-    "shelljs": "^0.7.8"
+    "shelljs": "^0.8.4"
   }
 }
