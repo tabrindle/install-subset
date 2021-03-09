@@ -36,6 +36,6 @@
     "commander": "^2.11.0",
     "cross-spawn": "^6.0.5",
     "import-fresh": "^3.2.1",
-    "shelljs": "^0.7.8"
+    "shelljs": "^0.8.4"
   }
 }
