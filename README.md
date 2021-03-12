@@ -92,7 +92,7 @@ In your terminal: `$ subset install container --all`
 
 If you would like install-subset to consider multiple subsets...
 
-In your terminal: `$subset install test container`
+In your terminal: `$ subset install test container`
 
 ## Case Study
 
